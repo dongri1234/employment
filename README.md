@@ -10,7 +10,7 @@
 
 - 拉取项目代码
 ```bash
-git clone https://github.com/vueComponent/ant-design-vue-pro.git
+git clone https://github.com/tangyuzhe/secondclass-admin.git
 cd ant-design-pro-vue
 ```
 
