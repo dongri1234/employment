@@ -276,6 +276,21 @@ export const asyncRouterMap = [
             meta: { title: '活动列表', keepAlive: true, permission: ['user'] }
           }
         ]
+      },
+      {
+        path: '/information',
+        component: RouteView,
+        redirect: '/information/index',
+        name: 'information',
+        meta: { title: '学生页', icon: 'user', keepAlive: true, permission: ['user'] },
+        children: [
+          {
+            path: '/information/index',
+            name: 'information',
+            component: () => import('@/views/information/index'),
+            meta: { title: '学生信息', keepAlive: true, permission: ['user'] }
+          }
+        ]
       }
 
       // other

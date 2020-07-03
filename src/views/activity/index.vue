@@ -36,7 +36,7 @@
         <span slot="action" slot-scope="text, record">
           <a-button-group>
             <a-button type="primary" @click="edit(record)">修改</a-button>
-            <a-button type="danger" @click="remove(record)">删除</a-button>
+            <a-button type="danger" @click="remove(record)" style="{margin-top:5px}">删除</a-button>
           </a-button-group>
         </span>
       </a-table>
