@@ -39,7 +39,7 @@ const user = {
         login(userInfo).then(response => {
           const result = response.result
           storage.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', result.token)
+          commit('SET_TOKEN', result.token) // 保存token
           resolve()
         }).catch(error => {
           reject(error)

@@ -56,7 +56,6 @@ request.interceptors.request.use(config => {
 request.interceptors.response.use((response) => {
   return response.data
 }, errorHandler)
-
 const installer = {
   vm: {},
   install (Vue) {

@@ -9,6 +9,8 @@
       @cancel="handleCancel"
       width="700px"
       destroyOnClose
+      okText="确定"
+      cancelText="取消"
     >
       <p>
         <edit-form ref="form" :data="data" @commit="test"></edit-form>
@@ -23,7 +25,7 @@ import moment from 'moment'
 const editForm = () => import('./editForm')
 moment.locale('zh-cn')
 export default {
-  props: ['data', 'text'],
+  props: ['data', 'text', 'search'],
   data() {
     return {
       content: this.text,
@@ -34,7 +36,11 @@ export default {
   },
   methods: {
     showModal() {
-      this.visible = true
+      if (this.text === '查找' && this.$parent.search === '') {
+        console.log('ttt')
+      } else {
+        this.visible = true
+      }
     },
     handleOk(key) {
       console.log('edit')

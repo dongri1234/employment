@@ -1,74 +1,40 @@
 <template>
   <page-header-wrapper>
     <a-card :bordered="false">
-      <!-- <s-table
-        ref="table"
-        size="default"
-        rowKey="key"
-        :columns="columns"
-        :data="loadData"
-        :alert="true"
-        :rowSelection="rowSelection"
-        showPagination="auto"
-      >
-        <span slot="serial" slot-scope="text, record, index">{{ index + 1 }}</span>
-        <span slot="status" slot-scope="text">
-          <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-        </span>
-        <span slot="description" slot-scope="text">
-          <ellipsis :length="4" tooltip>{{ text }}</ellipsis>
-        </span>
-
-        <span slot="action" slot-scope="text, record">
-          <template>
-            <a @click="handleEdit(record)">配置</a>
-            <a-divider type="vertical" />
-            <a @click="handleSub(record)">订阅报警</a>
-          </template>
-        </span>
-      </s-table>
-      <step-by-step-modal ref="modal" @ok="handleOk" />-->
-
-      <a-input
-        placeholder="请输入姓名"
-        style="width:300px;heigth:50px"
-        v-model="search"
-        @change="Search"
-      />
-      <edit :text="searchButton" :data="searchData" style="display:inline-block" ref="modifybtn">
-        <edit
-          :text="modify"
-          @handleOK="fresh"
-          :data="searchData"
-          style="display:inline-block"
-          :forceRender="true"
-        ></edit>
-        <a-popconfirm
-          title="确定删除?"
-          @confirm="() =>{
-          DelData(searchData.id);
-          this.$refs['modifybtn'].visible=false;
-        } "
-        >
-          <a-button type="primary" style="margin-top:5px">删除</a-button>
-        </a-popconfirm>
-      </edit>
-      <edit :text="add" @handleOK="addItem" ref="addData" style="display:inline-block;margin-left:10px"></edit>
+      <!-- <searchItem :data="searchData" @delete="DelData" @modify="edit"></searchItem> -->
+      <search @onClick="Search" ref="search"></search>
+      <a-button type="primary" style="margin-left:5px" @click="onReset">重置</a-button>
+      <edit
+        :text="add"
+        @handleOK="addItem"
+        ref="addData"
+        style="display:inline-block;margin-left:10px"
+        :search="search"
+      ></edit>
 
       <a-table :columns="columns" :data-source="data">
         <a slot="name" slot-scope="text">{{ text }}</a>
         <span slot="serial" slot-scope="text, record, index">{{ index + 1 }}</span>
         <span slot="finished" slot-scope="text">{{text===0?'进行中':'已结束'}}</span>
         <span slot="operation" slot-scope="text, record">
-          <a-button-group>
-            <edit :text="modify" @handleOK="edit" :data="record"></edit>
-            <a-popconfirm
-              title="确定删除?"
-              @confirm="() => DelData(record.id)"
-            >
-              <a-button type="primary" style="margin-top:5px">删除</a-button>
-            </a-popconfirm>
-          </a-button-group>
+          <edit
+            :text="modify"
+            @handleOK="edit"
+            :data="record"
+            :search="search"
+            style="display:inline-block"
+          ></edit>
+          <a-popconfirm
+            title="确定删除?"
+            okText="确定"
+            cancelText="取消"
+            @confirm="() => {
+              DelData(record.id)
+              this.$message.info('删除成功');
+            }"
+          >
+            <a-button type="primary" style="margin-left:5px">删除</a-button>
+          </a-popconfirm>
         </span>
       </a-table>
     </a-card>
@@ -79,28 +45,23 @@
 // import { STable, Ellipsis } from '@/components'
 
 // import { Component, Vue } from 'vue-property-decorator'
-import {
-  getRequest,
-  delRequest,
-  UpdateAlumnuInfo,
-  AddAlumnuInfo,
-  searchAlumnuInfo
-} from '../../api/studentInfo'
+import { delRequest, UpdateAlumnuInfo, AddAlumnuInfo, searchAlumnuInfo } from '../../api/studentInfo'
 import edit from '@/views/information/components/edit.vue'
+import { getRequest } from '@/api/studentInfo'
 const editFrom = () => import('@/views/information/components/editForm.vue')
-const addItem = () => import('@/views/information/components/AddItem.vue')
+const search = () => import('@/views/information/components/search.vue')
 
 const columns = [
   {
     title: '姓名',
     dataIndex: 'name',
-    width: '10%',
+    width: '7%',
     scopedSlots: { customRender: 'name' }
   },
   {
     title: '学号',
     dataIndex: 'student_id',
-    width: '10%',
+    width: '7%',
     scopedSlots: { customRender: 'student_id' },
     defaultSortOrder: 'descend'
   },
@@ -113,13 +74,13 @@ const columns = [
   {
     title: '出生日期',
     dataIndex: 'birthday',
-    width: '13%',
+    width: '10%',
     scopedSlots: { customRender: 'birthday' }
   },
   {
     title: '学院',
     dataIndex: 'college',
-    width: '15%',
+    width: '10%',
     scopedSlots: { customRender: 'college' }
   },
   {
@@ -160,11 +121,11 @@ const columns = [
 ]
 
 export default {
-  name: 'Activity',
+  // name: 'Activity',
   components: {
     edit,
     editFrom,
-    addItem
+    search
   },
   data() {
     return {
@@ -177,7 +138,7 @@ export default {
       searchButton: '查找',
       searchData: '',
       loading: false,
-      data: [],
+      data: {},
       datalength: '',
       params: {
         page: 1,
@@ -190,7 +151,7 @@ export default {
     async queryData() {
       const res = await getRequest('/api/alumnus', this.params)
       this.data = res.data.data
-      console.log(this.data.length)
+      console.log(this.data.data)
       console.log('return data', typeof this.data)
     },
 
@@ -199,15 +160,19 @@ export default {
       await delRequest('/api/alumnus', id)
       this.queryData()
       this.$message.success('删除成功', 1)
-
       console.log(id)
     },
 
     async edit(data, form) {
       await UpdateAlumnuInfo(data.id, form)
       console.log('this')
+      this.$message.info('修改成功')
       // console.log(res);
-      this.queryData()
+      if (this.$refs.search.formInline.user === '') {
+        this.queryData()
+      } else {
+        this.Search(this.$refs.search.formInline.user)
+      }
     },
 
     // 添加数据 data为新增的信息
@@ -216,25 +181,26 @@ export default {
       console.log(form)
       const mydata = Object.assign({}, form) // 拷贝为对象
       const res = await AddAlumnuInfo('/api/alumnus/createAlumnu', mydata)
+      this.$message.info('添加成功')
       console.log(res)
       this.queryData()
     },
 
-    async Search() {
-      console.log(this.search)
-      if (this.search === '') {
-        this.$message.error('This is an error message')
-      }
-
+    async Search(name) {
       console.log('search')
-      const res = await searchAlumnuInfo('/api/alumnus/findAlumnu?name=', this.search)
-      this.searchData = res.data.data
-
-      // console.log(res.data.data);
+      const res = await searchAlumnuInfo('/api/alumnus/findAlumnu?name=', name)
+      var queryData = []
+      queryData.push(res.data.data)
+      this.data = queryData
     },
     fresh(data, form) {
       this.edit(data, form)
       this.$refs['modifybtn'].visible = false
+    },
+    onReset() {
+      this.$refs.search.formInline.user = ''
+      this.queryData()
+      this.$message.info('已重置')
     }
   },
   created() {
