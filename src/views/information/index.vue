@@ -45,6 +45,7 @@
 // import { STable, Ellipsis } from '@/components'
 
 // import { Component, Vue } from 'vue-property-decorator'
+
 import { delRequest, UpdateAlumnuInfo, AddAlumnuInfo, searchAlumnuInfo } from '../../api/studentInfo'
 import edit from '@/views/information/components/edit.vue'
 import { getRequest } from '@/api/studentInfo'

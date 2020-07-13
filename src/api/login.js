@@ -1,16 +1,17 @@
 import request from '@/utils/request'
 
 const userApi = {
-  Login: '/auth/login',
-  Logout: '/auth/logout',
-  ForgePassword: '/auth/forge-password',
-  Register: '/auth/register',
-  twoStepCode: '/auth/2step-code',
-  SendSms: '/account/sms',
-  SendSmsErr: '/account/sms_err',
+  // Login: '/auth/login',
+  Login: 'http://124.70.154.132/api/user/Auth',
+  Logout: process.env.VUE_APP_API_BASE_URL + '/auth/logout',
+  ForgePassword: process.env.VUE_APP_API_BASE_URL + '/auth/forge-password',
+  Register: process.env.VUE_APP_API_BASE_URL + '/auth/register',
+  twoStepCode: process.env.VUE_APP_API_BASE_URL + '/auth/2step-code',
+  SendSms: process.env.VUE_APP_API_BASE_URL + '/account/sms',
+  SendSmsErr: process.env.VUE_APP_API_BASE_URL + '/account/sms_err',
   // get my info
-  UserInfo: '/user/info',
-  UserMenu: '/user/nav'
+  UserInfo: process.env.VUE_APP_API_BASE_URL + '/user/info',
+  UserMenu: process.env.VUE_APP_API_BASE_URL + '/user/nav'
 }
 
 /**
@@ -24,15 +25,15 @@ const userApi = {
  * @param parameter
  * @returns {*}
  */
-export function login (parameter) {
+export function login(parameter) {
   return request({
-    url: userApi.Login,
+    url: userApi.Login + '?' + 'userid=' + parameter.password + '&name=' + parameter.name,
     method: 'post',
     data: parameter
   })
 }
 
-export function getSmsCaptcha (parameter) {
+export function getSmsCaptcha(parameter) {
   return request({
     url: userApi.SendSms,
     method: 'post',
@@ -40,7 +41,7 @@ export function getSmsCaptcha (parameter) {
   })
 }
 
-export function getInfo () {
+export function getInfo() {
   return request({
     url: userApi.UserInfo,
     method: 'get',
@@ -50,14 +51,14 @@ export function getInfo () {
   })
 }
 
-export function getCurrentUserNav () {
+export function getCurrentUserNav() {
   return request({
     url: userApi.UserMenu,
     method: 'get'
   })
 }
 
-export function logout () {
+export function logout() {
   return request({
     url: userApi.Logout,
     method: 'post',
@@ -71,7 +72,7 @@ export function logout () {
  * get user 2step code open?
  * @param parameter {*}
  */
-export function get2step (parameter) {
+export function get2step(parameter) {
   return request({
     url: userApi.twoStepCode,
     method: 'post',

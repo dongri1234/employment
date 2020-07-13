@@ -1,10 +1,11 @@
 import axios from 'axios'
 import qs from 'qs'
 import request from '@/utils/request'
-
+// import { ACCESS_TOKEN } from '@/store/mutation-types'
+// import storage from 'store'
 // const baseUrl = 'http://124.70.154.132'
-const baseUrl = 'http://140.143.161.242'
-
+const baseUrl = 'http://124.70.154.132'
+const token = sessionStorage.getItem('token')
 export function getData2(url, params) {
   return request({
     url: baseUrl + url + '?' + qs.stringify(params),
@@ -14,7 +15,7 @@ export function getData2(url, params) {
     }
   })
 }
-export function getData (url, parameter) {
+export function getData(url, parameter) {
   return request({
     url: url,
     method: 'get',
@@ -47,7 +48,8 @@ const getRequest = (url, params) => {
         url: baseUrl + url + '?' + qs.stringify(params),
         method: 'get',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer ' + token
         }
       })
       .then((res) => {
