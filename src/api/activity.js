@@ -103,13 +103,12 @@ const delRequest = (url, id) => {
 const UpdateAlumnuInfo = (id, data) => {
   return new Promise((resolve, reject) => {
     request({
-        url: baseUrl + '/api/alumnus?id=' + id,
+        url: baseUrl + '/api/activity/update/' + id,
         data: data,
         method: 'put',
         headers: {
           'content-type': 'application/json',
           'Authorization': 'Bearer ' + token
-          // 'authorization': 'Bearer ' + token
         }
       })
       .then((res) => {
@@ -143,7 +142,6 @@ const searchAlumnuInfo = (url, name) => {
   return new Promise((resolve, reject) => {
     request({
         url: baseUrl + url + name,
-        // data: body,
         method: 'get',
         headers: {
           'content-type': 'application/json',

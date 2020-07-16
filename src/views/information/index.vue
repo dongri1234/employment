@@ -120,7 +120,6 @@ const columns = [
     scopedSlots: { customRender: 'operation' }
   }
 ]
-
 export default {
   // name: 'Activity',
   components: {
@@ -151,9 +150,8 @@ export default {
   methods: {
     async queryData() {
       const res = await getRequest('/api/alumnus', this.params)
-      this.data = res.data.data
-      console.log(this.data.data)
-      console.log('return data', typeof this.data)
+      console.log(res)
+      this.data = res.data
     },
 
     async DelData(id) {
@@ -191,7 +189,7 @@ export default {
       console.log('search')
       const res = await searchAlumnuInfo('/api/alumnus/findAlumnu?name=', name)
       var queryData = []
-      queryData.push(res.data.data)
+      queryData.push(res.data)
       this.data = queryData
     },
     fresh(data, form) {
