@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 const userApi = {
   // Login: '/auth/login',
-  Login: 'http://124.70.154.132/api/user/Auth',
+  Login: 'http://124.70.188.227/api/user/Auth',
   Logout: process.env.VUE_APP_API_BASE_URL + '/auth/logout',
   ForgePassword: process.env.VUE_APP_API_BASE_URL + '/auth/forge-password',
   Register: process.env.VUE_APP_API_BASE_URL + '/auth/register',

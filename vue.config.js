@@ -31,6 +31,7 @@ const assetsCDN = {
 
 // vue.config.js
 const vueConfig = {
+  assetsDir: "static",
   configureWebpack: {
     // webpack plugins
     plugins: [

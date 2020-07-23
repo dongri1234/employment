@@ -6,7 +6,7 @@ import request from '@/utils/request'
 // import { ACCESS_TOKEN } from '@/store/mutation-types'
 // import storage from 'store'
 // const baseUrl = 'http://124.70.154.132'
-const baseUrl = 'http://124.70.154.132'
+const baseUrl = 'http://124.70.188.227'
 const token = sessionStorage.getItem('token').replace(/^"|"$/g, '')
 
 const getRequest = (url, params) => {
