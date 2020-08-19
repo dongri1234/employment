@@ -8,11 +8,11 @@
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
         <a-menu-item v-if="menu" key="center" @click="handleToCenter">
           <a-icon type="user" />
-          个人中心
+          修改密码
         </a-menu-item>
         <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
           <a-icon type="setting" />
-          个人设置
+          注销账号
         </a-menu-item>
         <a-menu-divider v-if="menu" />
         <a-menu-item key="logout" @click="handleLogout">
@@ -44,10 +44,10 @@ export default {
   },
   methods: {
     handleToCenter () {
-      this.$router.push({ path: '/account/center' })
+      this.$router.push({ path: '/manage/modify' })
     },
     handleToSettings () {
-      this.$router.push({ path: '/account/settings' })
+      this.$router.push({ path: '/manage/cancellation' })
     },
     handleLogout (e) {
       Modal.confirm({
