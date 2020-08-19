@@ -303,7 +303,7 @@ export const asyncRouterMap = [
             path: '/job/index',
             name: 'job',
             component: () => import('@/views/job/index'),
-            meta: { title: '生就业信息表', keepAlive: true, permission: ['user'] }
+            meta: { title: '学生就业信息表', keepAlive: true, permission: ['user'] }
           }
         ]
       },
@@ -318,7 +318,7 @@ export const asyncRouterMap = [
             path: '/analysis/index',
             name: 'analysis',
             component: () => import('@/views/analysis/index'),
-            meta: { title: '学生信息表', keepAlive: true, permission: ['user'] }
+            meta: { title: '统计分析图', keepAlive: true, permission: ['user'] }
           }
         ]
       },
